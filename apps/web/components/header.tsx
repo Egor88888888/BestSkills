@@ -3,6 +3,7 @@
 import Link from 'next/link'
 import { useTheme } from 'next-themes'
 import { useState, useEffect } from 'react'
+import { Sun, Moon } from 'lucide-react'
 
 function ThemeToggle() {
   const { theme, setTheme } = useTheme()
@@ -11,26 +12,26 @@ function ThemeToggle() {
   if (!mounted) return null
   return (
     <button
-      className="ml-4 px-3 py-1 rounded bg-accent text-accent-foreground border border-border hover:bg-primary hover:text-primary-foreground transition"
+      className="ml-2 p-2 rounded-full border border-border bg-accent text-accent-foreground hover:bg-primary hover:text-primary-foreground transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-primary"
       onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')}
       aria-label="Переключить тему"
     >
-      {theme === 'dark' ? '🌞' : '🌙'}
+      {theme === 'dark' ? <Sun className="w-5 h-5" /> : <Moon className="w-5 h-5" />}
     </button>
   )
 }
 
 export function Header() {
   return (
-    <header className="w-full border-b border-border bg-background/80 backdrop-blur sticky top-0 z-30">
+    <header className="w-full border-b border-border bg-background/80 backdrop-blur sticky top-0 z-30 shadow-sm">
       <div className="container flex items-center justify-between h-16">
-        <Link href="/" className="text-2xl font-bold tracking-tight text-primary">
-          BestSkills
+        <Link href="/" className="flex items-center gap-2 text-2xl font-extrabold tracking-tight text-primary hover:text-yellow-500 transition-colors">
+          <span className="bg-gradient-to-tr from-yellow-400 via-yellow-300 to-yellow-100 bg-clip-text text-transparent">BestSkills</span>
         </Link>
-        <nav className="flex items-center gap-4 text-base">
-          <Link href="/tasks" className="hover:text-accent transition">Задачи</Link>
-          <Link href="/services" className="hover:text-accent transition">Сервисы</Link>
-          <Link href="/auth" className="hover:text-accent transition">Войти</Link>
+        <nav className="flex items-center gap-2 md:gap-6 text-base font-medium">
+          <Link href="/tasks" className="px-3 py-1 rounded hover:bg-accent hover:text-accent-foreground transition-colors">Задачи</Link>
+          <Link href="/services" className="px-3 py-1 rounded hover:bg-accent hover:text-accent-foreground transition-colors">Сервисы</Link>
+          <Link href="/auth" className="px-3 py-1 rounded border border-primary text-primary hover:bg-primary hover:text-primary-foreground transition-colors">Войти</Link>
           <ThemeToggle />
         </nav>
       </div>
