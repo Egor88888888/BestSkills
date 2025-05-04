@@ -50,10 +50,14 @@ export function AuthForm() {
           description: 'Please check your email and phone for verification codes',
         })
       }
-    } catch (error) {
+    } catch (err: unknown) {
+      const message =
+        err instanceof Error
+          ? err.message
+          : 'An unexpected error occurred';
       toast({
         title: 'Error',
-        description: error.message,
+        description: message,
         variant: 'destructive',
       })
     } finally {
