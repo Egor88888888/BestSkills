@@ -12,22 +12,18 @@ export interface ToastProps {
 
 interface ToastContextType {
   toasts: ToastProps[];
-  /**
-   * Shows a new toast notification.
-   * @param props - Toast properties without the id field.
-   */
-  toast(props: Omit<ToastProps, 'id'>): void;
-  removeToast(id: string): void;
+  toast: (props: Omit<ToastProps, 'id'>) => void;
+  removeToast: (id: string) => void;
 }
 
-const ToastContext = createContext<ToastContextType | undefined>(undefined);
+const ToastContext = createContext<ToastContextType>({
+  toasts: [],
+  toast: () => {},
+  removeToast: () => {},
+});
 
 export function useToast() {
-  const context = useContext(ToastContext);
-  if (!context) {
-    throw new Error('useToast must be used within a ToastProvider');
-  }
-  return context;
+  return useContext(ToastContext);
 }
 
 export function ToastProvider({ children }: { children: ReactNode }) {
