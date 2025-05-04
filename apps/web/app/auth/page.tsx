@@ -3,9 +3,10 @@ import { createServerComponentClient } from '@supabase/auth-helpers-nextjs'
 import { cookies } from 'next/headers'
 import dynamic from 'next/dynamic'
 
-const AuthPageClient = dynamic(() => import('@/components/auth-page-client'), {
-  ssr: false
-})
+const AuthPageClient = dynamic(
+  () => import('@/components/auth-page-client').then(mod => mod.default),
+  { ssr: false }
+)
 
 export default async function AuthPage() {
   const supabase = createServerComponentClient({ cookies })

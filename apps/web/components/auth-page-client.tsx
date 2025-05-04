@@ -3,7 +3,7 @@
 import { AuthForm } from '@/components/auth-form'
 import { ToastProvider } from '@/components/ui/use-toast'
 
-export function AuthPageClient() {
+export default function AuthPageClient() {
   return (
     <ToastProvider>
       <div className="container flex items-center justify-center min-h-screen py-8">
