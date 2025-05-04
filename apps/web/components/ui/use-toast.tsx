@@ -1,6 +1,6 @@
 'use client';
 
-import * as React from 'react';
+import { createContext, useContext, useState, useCallback, ReactNode } from 'react';
 import { cn } from '@/lib/utils';
 
 export interface ToastProps {
@@ -20,20 +20,20 @@ interface ToastContextType {
   removeToast(id: string): void;
 }
 
-const ToastContext = React.createContext<ToastContextType | undefined>(undefined);
+const ToastContext = createContext<ToastContextType | undefined>(undefined);
 
 export function useToast() {
-  const context = React.useContext(ToastContext);
+  const context = useContext(ToastContext);
   if (!context) {
     throw new Error('useToast must be used within a ToastProvider');
   }
   return context;
 }
 
-export function ToastProvider({ children }: { children: React.ReactNode }) {
-  const [toasts, setToasts] = React.useState<ToastProps[]>([]);
+export function ToastProvider({ children }: { children: ReactNode }) {
+  const [toasts, setToasts] = useState<ToastProps[]>([]);
 
-  const toast = React.useCallback((props: Omit<ToastProps, 'id'>) => {
+  const toast = useCallback((props: Omit<ToastProps, 'id'>) => {
     const id = Math.random().toString(36).substring(2, 9);
     setToasts((prev) => [...prev, { ...props, id }]);
     setTimeout(() => {
@@ -41,7 +41,7 @@ export function ToastProvider({ children }: { children: React.ReactNode }) {
     }, 3000);
   }, []);
 
-  const removeToast = React.useCallback((id: string) => {
+  const removeToast = useCallback((id: string) => {
     setToasts((prev) => prev.filter((t) => t.id !== id));
   }, []);
 
