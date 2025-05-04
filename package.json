@@ -2,6 +2,9 @@
   "name": "barterhours",
   "version": "1.0.0",
   "private": true,
+  "workspaces": [
+    "apps/web"
+  ],
   "scripts": {
     "dev": "pnpm --filter web dev",
     "build": "pnpm --filter web build",
