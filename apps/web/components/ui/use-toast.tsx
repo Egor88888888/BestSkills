@@ -12,8 +12,12 @@ export interface ToastProps {
 
 interface ToastContextType {
   toasts: ToastProps[];
-  addToast: (toast: Omit<ToastProps, 'id'>) => void;
-  removeToast: (id: string) => void;
+  /**
+   * Shows a new toast notification.
+   * @param props - Toast properties without the id field.
+   */
+  toast(props: Omit<ToastProps, 'id'>): void;
+  removeToast(id: string): void;
 }
 
 const ToastContext = React.createContext<ToastContextType | undefined>(undefined);
@@ -29,9 +33,12 @@ export function useToast() {
 export function ToastProvider({ children }: { children: React.ReactNode }) {
   const [toasts, setToasts] = React.useState<ToastProps[]>([]);
 
-  const addToast = React.useCallback((toast: Omit<ToastProps, 'id'>) => {
+  const toast = React.useCallback((props: Omit<ToastProps, 'id'>) => {
     const id = Math.random().toString(36).substring(2, 9);
-    setToasts((prev) => [...prev, { ...toast, id }]);
+    setToasts((prev) => [...prev, { ...props, id }]);
+    setTimeout(() => {
+      setToasts((prev) => prev.filter((t) => t.id !== id));
+    }, 3000);
   }, []);
 
   const removeToast = React.useCallback((id: string) => {
@@ -39,7 +46,7 @@ export function ToastProvider({ children }: { children: React.ReactNode }) {
   }, []);
 
   return (
-    <ToastContext.Provider value={{ toasts, addToast, removeToast }}>
+    <ToastContext.Provider value={{ toasts, toast, removeToast }}>
       {children}
       <div className="fixed bottom-4 right-4 z-50 space-y-2">
         {toasts.map((toast) => (
